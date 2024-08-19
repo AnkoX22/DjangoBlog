@@ -28,12 +28,26 @@ def deleteTask(boolVal, string) :
         
     return output
 
+def on_click_entry(event,addToDo):
+    if addToDo.get() == "To do":
+        addToDo.delete(0,END)
+        addToDo.insert(0,' ')
+        addToDo.config(foreground = 'black')
+
+def on_focus_out(event,addToDo):
+    if addToDo.get() == "":
+        addToDo.insert(0,'To do')
+        addToDo.config(foreground = 'grey')
+
 
 def toDo(root, num):
    boolVal = BooleanVar
-   addToDo = ttk.Entry(root)
-   addToDo.insert(0,"To do")
+   addToDo = ttk.Entry(root, foreground="black", background="white")
    addToDo.grid(row=num,column=1)
+   addToDo.insert(0,"To do")
+   addToDo.config(foreground ='grey')
+   addToDo.bind('<FocusIn>',on_click_entry(event=any,addToDo= addToDo))
+   addToDo.bind('<FocusOut>', on_focus_out(event= any,addToDo=addToDo))
 
    check1 =  ttk.Checkbutton(root, text="", variable=boolVal )
    check1.grid(row=num,column=0)
@@ -46,11 +60,11 @@ def defaultToDo(root,num):
 
 datetimeToday = datetime.datetime.now()
 root = Tk()
-root.geometry("700x720")
+root.geometry("700x650")
 
-#style = ttk.Style()
+style = ttk.Style()
 
-#style.configure()
+style.configure("To-do-Entry",fg="black", bg="white")
 
 month = findMonth(datetimeToday.month)
 day = datetimeToday.day
@@ -63,8 +77,8 @@ label = ttk.Label(root, text="My to do list")
 label.grid(column=0,row= lineCounter)
 lineCounter += 1
 
-addToDo = ttk.Button(root, text="+")
-addToDo.grid(row=lineCounter, column=100)
+addToDoB = ttk.Button(root, text="+")
+addToDoB.grid(row=lineCounter, column=100)
 
 
 weekLabel = ttk.Label(root,text = dateWeek)
