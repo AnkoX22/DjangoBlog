@@ -4,19 +4,12 @@ import datetime
 
 def findMonth(number):
 
+    addToDo = ttk.Entry
+
     values = {
-        1 : "January",
-        2 : "February",
-        3 : "March",
-        4 : "April",
-        5 : "May",
-        6 : "June",
-        7 : "July", 
-        8 : "August",
-        9 : "September",
-        10 : "October",
-        11 : "November",
-        12 : "December" 
+        1 : "January", 2 : "February", 3 : "March", 4 : "April",
+        5 : "May", 6 : "June", 7 : "July", 8 : "August",9 : "September",
+        10 : "October", 11 : "November",12 : "December" 
     }
     return values.get(number, "nothing")
 
@@ -28,35 +21,43 @@ def deleteTask(boolVal, string) :
         
     return output
 
-def on_click_entry(event,addToDo):
-    if addToDo.get() == "To do":
-        addToDo.delete(0,END)
-        addToDo.insert(0,' ')
-        addToDo.config(foreground = 'black')
+class toDo:
+    
+    def __init__(self,root,num):
+        self.root = root
+        self.num = num
+        self.addToDo = ttk.Entry(root, foreground="black", background="white")
+        self.boolVal = BooleanVar()
 
-def on_focus_out(event,addToDo):
-    if addToDo.get() == "":
-        addToDo.insert(0,'To do')
-        addToDo.config(foreground = 'grey')
+        
+    
+    def on_click_entry(self,event):
+        if self.addToDo.get() == "To do":
+            self.addToDo.delete(0,END)
+            self.addToDo.insert(0,"")
+            self.addToDo.config(foreground = 'black')
 
+    def on_focus_out(self,event):
+        if self.addToDo.get() == "":
+            self.addToDo.insert(0,"To do")
+            self.addToDo.config(foreground = 'grey')
+    
+    def createToDo(self):
+        self.addToDo.grid(row=self.num,column=1)
+        self.addToDo.insert(0,"To do")
+        self.addToDo.config(foreground ='grey')
+        self.addToDo.bind('<FocusIn>',self.on_click_entry)
+        self.addToDo.bind('<FocusOut>', self.on_focus_out)
 
-def toDo(root, num):
-   boolVal = BooleanVar
-   addToDo = ttk.Entry(root, foreground="black", background="white")
-   addToDo.grid(row=num,column=1)
-   addToDo.insert(0,"To do")
-   addToDo.config(foreground ='grey')
-   addToDo.bind('<FocusIn>',on_click_entry(event=any,addToDo= addToDo))
-   addToDo.bind('<FocusOut>', on_focus_out(event= any,addToDo=addToDo))
+        check1 =  ttk.Checkbutton(root, text="", variable=self.boolVal )
+        check1.grid(row=self.num,column=0)
+        return self.num+1
+    
 
-   check1 =  ttk.Checkbutton(root, text="", variable=boolVal )
-   check1.grid(row=num,column=0)
-   return num+1
-
-def defaultToDo(root,num):
-    for i in range(3):
-        toDo(root,num+i)
-    return num+3
+    def defaultToDo(self,num):
+        for i in range(3):
+            num = toDo(self.root,num).createToDo()
+        return num
 
 datetimeToday = datetime.datetime.now()
 root = Tk()
@@ -85,44 +86,46 @@ weekLabel = ttk.Label(root,text = dateWeek)
 weekLabel.grid(column=0, row=lineCounter)
 lineCounter += 1
 
+toDo1 = toDo(root,lineCounter)
+
 mon = ttk.Label(root, text="Mon")
 mon.grid(row=lineCounter)
 lineCounter += 1
-lineCounter += defaultToDo(root,lineCounter)
+lineCounter += toDo1.defaultToDo(lineCounter)
 
 tue = ttk.Label(root, text="Tue")
 tue.grid(row=lineCounter)
 lineCounter += 1
-lineCounter += defaultToDo(root,lineCounter)
+lineCounter += toDo1.defaultToDo(lineCounter)
 
 wed = ttk.Label(root, text="Wed")
 wed.grid(row =lineCounter)
 lineCounter += 1
-lineCounter += defaultToDo(root,lineCounter)
+lineCounter += toDo1.defaultToDo(lineCounter)
 
 
 thir = ttk.Label(root, text="Thir")
 thir.grid(row=lineCounter)
 lineCounter += 1
-lineCounter += defaultToDo(root,lineCounter)
+lineCounter += toDo1.defaultToDo(lineCounter)
 
 
 fri = ttk.Label(root, text="Fri")
 fri.grid(row= lineCounter)
 lineCounter += 1
-lineCounter += defaultToDo(root,lineCounter)
+lineCounter += toDo1.defaultToDo(lineCounter)
 
 
 sat = ttk.Label(root, text = "Sat")
 sat.grid(row= lineCounter)
 lineCounter += 1
-lineCounter += defaultToDo(root,lineCounter)
+lineCounter += toDo1.defaultToDo(lineCounter)
 
 
 sun = ttk.Label(root, text="Sun")
 sun.grid(row= lineCounter)
 lineCounter += 1
-lineCounter += defaultToDo(root,lineCounter)
+lineCounter += toDo1.defaultToDo(lineCounter)
 
 
 root.mainloop()
