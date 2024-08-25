@@ -13,13 +13,6 @@ def findMonth(number):
     }
     return values.get(number, "nothing")
 
-def deleteTask(boolVal, string) :
-    if boolVal:
-        output = ""
-        for c in string :
-            output += c + '\u0336'
-        
-    return output
 
 class toDo:
     
@@ -28,6 +21,7 @@ class toDo:
         self.num = num
         self.addToDo = ttk.Entry(root, foreground="black", background="white")
         self.boolVal = BooleanVar()
+        root.bind('<Button-1>', self.save_text)
 
         
     
@@ -42,22 +36,38 @@ class toDo:
             self.addToDo.insert(0,"To do")
             self.addToDo.config(foreground = 'grey')
     
+    def save_text(self,event=None):
+
+        self.addToDo.get()
+
     def createToDo(self):
         self.addToDo.grid(row=self.num,column=1)
         self.addToDo.insert(0,"To do")
         self.addToDo.config(foreground ='grey')
         self.addToDo.bind('<FocusIn>',self.on_click_entry)
         self.addToDo.bind('<FocusOut>', self.on_focus_out)
+        self.addToDo.bind('<Return>',self.save_text)
 
-        check1 =  ttk.Checkbutton(root, text="", variable=self.boolVal )
+        check1 =  ttk.Checkbutton(root, text="", variable=self.boolVal, command= self.mark_task_done )
         check1.grid(row=self.num,column=0)
         return self.num+1
     
-
     def defaultToDo(self,num):
         for i in range(3):
             num = toDo(self.root,num).createToDo()
         return num
+    
+    def mark_task_done(self) :
+        string = self.addToDo.get()
+        self.addToDo.configure(foreground='grey');
+        if self.boolVal:
+            output = ""
+            for c in string :
+                output = output +'\u0336'+ c + '\u0336'
+        self.addToDo.delete(0,END)
+        self.addToDo.insert(0,output)
+        
+        return output
 
 datetimeToday = datetime.datetime.now()
 root = Tk()
