@@ -1,197 +1,181 @@
 from tkinter import *
 from tkinter import ttk
-import datetime
+import math
+
+master = Tk()
+master.geometry("350x220")
+master.title("Simple Calculator")
+
+buttonFrame = Frame(master)
+buttonFrame.pack(side=BOTTOM)
+
+display_frame = Frame(master)
+display_frame.pack()
+
+user_input = StringVar()
+
+# create constants for interface
+h = 3
+w = 5
+px = 2
+py = 2
+
+# the display entry for the input
+display = ttk.Entry(display_frame, textvariable=user_input)
+display.pack(ipady=3)
+display.config(state='readonly')
 
 
-# open file and if it doesnt exist create one to save the todo list
-with open("to_do_list.txt") as file:
-        # write the title of the file
-        file.write('To do list\n','w+')
-
-# a function to get the month name from 
-def findMonth(number):
-
-    # the number of the month with the name of the month in enum / dictionary 
-    months = {
-        1 : "January", 2 : "February", 3 : "March", 4 : "April",
-        5 : "May", 6 : "June", 7 : "July", 8 : "August",9 : "September",
-        10 : "October", 11 : "November",12 : "December" 
-    }
-
-    # return the name of the month or nothing (word) if not in dictionary
-    return months.get(number, "nothing")
+# updating the display
+def update_display(value):
+    display.config(state='normal')
+    display.delete(0, END)
+    display.insert(0, value)
+    display.config(state='readonly')
 
 
-# class to do for the checkbox and the entry of every day of the week
-class toDo:
-    
-    # initialization for the creation of a toDo object, class properties
-    def __init__(self,root,num):
-        # root in which creates the elements
-        self.root = root
-        # the number of the line in the grid that we are currently on
-        self.num = num
-        # the add to do entry of every check box / day
-        self.addToDo = ttk.Entry(root, foreground="black")
-        # the boolean value of the checkbox
-        self.boolVal = BooleanVar()
-        # save text when user pushes enter
-        root.bind('<Button-1>', self.save_text)
-
-        
-    # function for when user clicks on entry
-    def on_click_entry(self,event):
-        if self.addToDo.get() == "To do":
-            self.addToDo.delete(0,END)
-            self.addToDo.insert(0,"")
-            self.addToDo.config(foreground = 'black')
-
-    # function for when the user  focuses out of entry
-    def on_focus_out(self,event):
-        if self.addToDo.get() == "":
-            self.addToDo.insert(0,"To do")
-            self.addToDo.config(foreground = 'grey')
-    
-    # save text function to save the text in file 
-    def save_text(self,event=None):
-
-        self.addToDo.get()
-
-    # inserts to do entries and checkbuttons on grid
-    def createToDo(self):
-        self.addToDo.grid(row=self.num,column=1)
-        self.addToDo.insert(0,"To do")
-        self.addToDo.config(foreground ='grey')
-        self.addToDo.bind('<FocusIn>',self.on_click_entry)
-        self.addToDo.bind('<FocusOut>', self.on_focus_out)
-        self.addToDo.bind('<Return>',self.save_text)
-
-        check1 =  ttk.Checkbutton(root, text="", variable=self.boolVal, command= self.mark_task )
-        check1.grid(row=self.num,column=0)
-        return self.num+1
-    
-    # create default to dos (3)
-    def defaultToDo(self,num):
-        for i in range(3):
-            num = toDo(self.root,num).createToDo()
-        return num
-    
-    #  mark or unmark task (with strike through) controlled by checkbutton
-    def mark_task(self) :
-        string = self.addToDo.get()
-        # if checkbutton unchecked
-        if(self.boolVal.get() == 0):
-            string = self.addToDo.get()
-            if self.boolVal:
-                output = ""
-                self.addToDo.config(foreground="black")
-                for c in string:
-                    if c != '\u0336':
-                        output += c
-            self.addToDo.delete(0,END)
-            self.addToDo.add(0,output)
-        # if checkbutton checked
-        else :
-            self.addToDo.configure(foreground='grey')
-            if self.boolVal:
-                output = ""
-                for c in string :
-                    output = output + c + '\u0336'
-            self.addToDo.delete(0,END)
-            self.addToDo.insert(0,output)
-        
-        return output
-        
-# get datetime now
-datetimeToday = datetime.datetime.now()
-# create root
-root = Tk()
-# choose window dimensions
-root.geometry("700x650")
-
-# create style elements to create specific style
-style = ttk.Style()
-
-# use a  theme style (existing)
-style.theme_use("vista")
-# Create a custom style for a label
-style.configure("Custom.TLabel", 
-                font=("ComicSan", 12), 
-                foreground="black")
+# command function of clear button
+def clear():
+    display.config(state='normal')
+    display.delete(0, END)
+    display.config(state='readonly')
 
 
-# finfd the name of the month from number using the findMonth function
-month = findMonth(datetimeToday.month)
-day = datetimeToday.day # get day
-
-# create date week string
-dateWeek = month + " " + str(day) + " - " + month + " " + str(day + 7)
-
-# days array
-days = ["Mon", "Tue", "Wed", "Thur", "Fri", "Sat", "Sun"]
-
-# var lineCounter to keep count of the row in grid
-lineCounter = 0
-
-# create initial label and put in grid
-label = ttk.Label(root, text="My to do list", style='Custom.TLabel')
-label.grid(column=0,row= lineCounter)
-lineCounter += 1
-
-# add button to increase the to do checkbuttons / entries
-addToDoB = ttk.Button(root, text="+")
-addToDoB.grid(row=lineCounter, column=100)
-
-# create week label and put in grid
-weekLabel = ttk.Label(root,text = dateWeek, style='Custom.TLabel')
-weekLabel.grid(column=0, row=lineCounter)
-lineCounter += 1
-
-# create to do object
-toDo1 = toDo(root,lineCounter)
-
-# create mon label, default to dos and put in grid
-mon = ttk.Label(root, text="Mon", style='Custom.TLabel')
-mon.grid(row=lineCounter)
-lineCounter += 1
-lineCounter += toDo1.defaultToDo(lineCounter)
-
-# create tue label, default to dos and put in grid
-tue = ttk.Label(root, text="Tue", style='Custom.TLabel')
-tue.grid(row=lineCounter)
-lineCounter += 1
-lineCounter += toDo1.defaultToDo(lineCounter)
-
-# create wed label, default to dos and put in grid
-wed = ttk.Label(root, text="Wed", style='Custom.TLabel')
-wed.grid(row =lineCounter)
-lineCounter += 1
-lineCounter += toDo1.defaultToDo(lineCounter)
-
-# create thir label, default to dos and put in grid
-thir = ttk.Label(root, text="Thir", style='Custom.TLabel')
-thir.grid(row=lineCounter)
-lineCounter += 1
-lineCounter += toDo1.defaultToDo(lineCounter)
-
-# create fri label, default to dos and put in grid
-fri = ttk.Label(root, text="Fri", style='Custom.TLabel')
-fri.grid(row= lineCounter)
-lineCounter += 1
-lineCounter += toDo1.defaultToDo(lineCounter)
-
-# create sat label, default to dos and put in grid
-sat = ttk.Label(root, text = "Sat", style='Custom.TLabel')
-sat.grid(row= lineCounter)
-lineCounter += 1
-lineCounter += toDo1.defaultToDo(lineCounter)
-
-# create sun label, default to dos and put in grid
-sun = ttk.Label(root, text="Sun", style='Custom.TLabel')
-sun.grid(row= lineCounter)
-lineCounter += 1
-lineCounter += toDo1.defaultToDo(lineCounter)
+# command function for c button
+def c(event=None):
+    display.config(state='normal')
+    display.delete(len(display.get())-1, len(display.get()))
+    display.config(state='readonly')
 
 
-root.mainloop()
+# command function for ce button
+def ce():
+    last_numeric = display.get()
+    if last_numeric.isnumeric():
+        clear()
+    else:
+        i = 1
+        while ('/' in last_numeric) | ('*' in last_numeric) | ('+' in last_numeric) | ('-' in last_numeric):
+            last_numeric = last_numeric[1:]
+            i += 1
+        display.config(state='normal')
+        display.delete(i-1, END)
+        display.config(state='readonly')
 
+
+# command function for equal button
+def equal(event=None):
+    try:
+        y = str(eval(display.get()))
+        display.delete(0, END)
+        update_display(y)
+    except EXCEPTION:
+        update_display("Error, not valid input")
+
+
+# command function for the 2nd power button
+def power2():
+    try:
+        y = str(pow(float(eval(display.get())), 2))
+        update_display(y)
+    except EXCEPTION:
+        update_display("Error, the number under the root cannot be negative")
+
+
+# command function for inverse function
+def inverse():
+    try:
+        y = str(1/float(display.get()))
+        update_display(y)
+    except ZeroDivisionError:
+        update_display("Error, you cannot divide with zero")
+
+
+# command function for sqrt button
+def square_root():
+    float_input = float(eval(display.get()))
+    try:
+        y = str(math.sqrt(float_input))
+        update_display(y)
+    except EXCEPTION:
+        update_display("Error, the number cannot be negative")
+
+
+# command function for reverse button
+def reverse():
+    try:
+        y = str(-float(display.get()))
+        update_display(y)
+    except EXCEPTION:
+        update_display("Error")
+
+
+# command function to insert in display the numbers of the pressed buttons
+def on_click(name):
+    current_text = display.get() + name
+    update_display(current_text)
+
+
+def per_cent():
+    try:
+        y = str(float(display.get())/100.0)
+        update_display(y)
+    except EXCEPTION:
+        update_display("0")
+
+
+def create_button(frame, input_text, input_command, input_row, input_column, pad_x, pad_y):
+    new_button = ttk.Button(frame, text=input_text, command=input_command)
+    new_button.grid(row=input_row, column=input_column, padx=pad_x, pady=pad_y)
+    master.grid_rowconfigure(input_row, weight=1)
+    master.grid_columnconfigure(input_column, weight=1)
+    return new_button
+
+
+master.bind('<Return>', equal)
+master.bind('=', equal)
+master.bind('<BackSpace>', c)
+
+for num in range(10):
+    master.bind(str(num), lambda event, n=num: on_click(str(n)))
+
+arithmetic_operations = ['+', '-', '/', '*', '(', ')']
+
+
+for operator in arithmetic_operations:
+    master.bind(operator, lambda event, op=operator: on_click(op))
+
+
+buttons = [
+    {'text': '%', 'command': per_cent, 'row': 1, 'column': 1},
+    {'text': 'CE', 'command': ce, 'row': 1, 'column': 2},
+    {'text': 'C', 'command': c, 'row': 1, 'column': 3},
+    {'text': 'Delete', 'command': clear, 'row': 1, 'column': 4},
+    {'text': '1/x', 'command': inverse, 'row': 2, 'column': 1},
+    {'text': '^2', 'command': power2, 'row': 2, 'column': 2},
+    {'text': 'sqrt()', 'command': square_root, 'row': 2, 'column': 3},
+    {'text': '/', 'command': lambda: on_click('/'), 'row': 2, 'column': 4},
+    {'text': '7', 'command': lambda: on_click('7'), 'row': 3, 'column': 1},
+    {'text': '8', 'command': lambda: on_click('8'), 'row': 3, 'column': 2},
+    {'text': '9', 'command': lambda: on_click('9'), 'row': 3, 'column': 3},
+    {'text': '*', 'command': lambda: on_click('*'), 'row': 3, 'column': 4},
+    {'text': '4', 'command': lambda: on_click('4'), 'row': 4, 'column': 1},
+    {'text': '5', 'command': lambda: on_click('5'), 'row': 4, 'column': 2},
+    {'text': '6', 'command': lambda: on_click('6'), 'row': 4, 'column': 3},
+    {'text': '-', 'command': lambda: on_click('-'), 'row': 4, 'column': 4},
+    {'text': '1', 'command': lambda: on_click('1'), 'row': 5, 'column': 1},
+    {'text': '2', 'command': lambda: on_click('2'), 'row': 5, 'column': 2},
+    {'text': '3', 'command': lambda: on_click('3'), 'row': 5, 'column': 3},
+    {'text': '+', 'command': lambda: on_click('+'), 'row': 5, 'column': 4},
+    {'text': '+/-', 'command': reverse, 'row': 6, 'column': 1},
+    {'text': '0', 'command': lambda: on_click('0'), 'row': 6, 'column': 2},
+    {'text': '.', 'command': lambda: on_click('.'), 'row': 6, 'column': 3},
+    {'text': '=', 'command': equal, 'row': 6, 'column': 4},
+]
+
+for button in buttons:
+    create_button(buttonFrame, button['text'], button['command'], button['row'], button['column'], px, py)
+
+
+# run interface
+master.mainloop()
