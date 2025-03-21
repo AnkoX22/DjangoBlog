@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Member Login</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="authanticator.js" defer></script>
+</head>
+<body>
+<div class="container">
+    <h1>Member Login</h1>
+    <form id = "login-form">
+        <label for="username">Username:</label>
+        <input  type="text" name="username" id="username" placeholder="Username" minlength="4" required/>
+        <label for="password">Password:</label>
+        <input  type="password" name="password" id="password" placeholder="Password" required minlength="8"/>
+        <button type="submit" name="submit" id="submit" value="Submit">Submit</button>
+        <div id="error-message"></div>
+    </form>
+    <p id="not-member">Not a member? <a href="target_list.html">Sign Up</a></p>
+</div>
+</body>
+</html>

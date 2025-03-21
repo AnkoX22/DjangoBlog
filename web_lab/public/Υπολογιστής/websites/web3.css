@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500&display=swap');
+
+:root {
+    --background: #00629B;
+    --selection: #44475a;
+    --comment: #f8f8f2;
+    --white: #f8f8f2;
+}
+
+body {
+    background-color: var(--background);
+    color: var(--white);
+    font-family: 'Fira Sans', sans-serif;
+}
+
+footer {
+    text-align: center;
+    color: var(--comment);
+    font-size: 0.75rem;
+    font-weight: 400;
+}
+
+#Photo {
+    width: 120px; 
+    height: 120px; 
+    display: block;
+    margin: 20px auto; 
+    border-radius: 50%;
+    border: 4px solid var(--white); 
+    object-fit: cover; 
+}
+
+
+#Name {
+    color: var(--white);
+    font-size: 1.25rem; 
+    font-weight: 500; 
+    text-align: center;
+    text-decoration: none;
+    line-height: 1.5; 
+    display: block;
+    margin-top: 10px; 
+}
+
+
+.link-title {
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+}
+
+#links {
+    max-width: 675px;
+    width: auto;
+    display: block;
+    margin: 27px auto;
+}
+
+.link {
+    display: block;
+    padding: 15px;
+    margin: 10px 0;
+    background-color: var(--background);
+    color: var(--comment);
+    font-size: 18px;
+    font-weight: 500;
+    border-radius: 25px; 
+    border: 2px solid var(--white);
+    text-decoration: none;
+    text-align: center; 
+    transition: all .3s ease;
+}
+
+.link:hover {
+    background-color: var(--white);
+    color: var(--background);
+}
+
+
+.link i {
+    margin-right: 10px; 
+}
+
+.spotify-player {
+    margin-top: 50px;
+    padding: 20px;
+    background-color: var(--background);
+    border-radius: 5px;
+}
+
+.spotify-player iframe {
+    border-radius: 5px;
+}
+
+
+
+.link-facebook {
+    border-color: white; 
+}
+
+.link-instagram {
+    border-color: white; 
+}
+
+.link-spotify {
+    border-color: white; 
+}
+
+.link-linkedin {
+    border-color: white; 
+}
+
+.link-discord {
+    border-color: white;
+}
+
+.link-summerschool {
+    border-color: white;
+}
+
+/* Modify hover effect to change background and text color */
+.link-facebook:hover {
+    background-color: #3b5998; /* Facebook color */
+    color: white; /* Change text color to background color */
+}
+
+.link-instagram:hover {
+    background-color: #c13584; /* Instagram color */
+    color: white; /* Change text color to background color */
+}
+
+.link-spotify:hover {
+    background-color: #1db954; /* Spotify color */
+    color: white; /* Change text color to background color */
+}
+
+.link-linkedin:hover {
+    background-color: #0077b5; /* LinkedIn color */
+    color: white; /* Change text color to background color */
+}
+
+.link-discord:hover {
+    background-color: #7289da;
+    color: white;
+}
+
+.link-summerschool:hover {
+    background-color: #6aacb9;
+    color: white;
+}

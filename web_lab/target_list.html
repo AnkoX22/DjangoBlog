@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Join The Cozy Book Club!</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="authanticator.js" defer></script>
+</head>
+<body>
+<div class="container">
+    <h1>Join The Cozy Book Club!</h1>
+    <p>Fill out the form below to become a member and start exploring the world of books with us!</p>
+    <form id="signup-form">
+        <label for="username">Username:<br></label>
+        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+        <label for="password">Password:<br></label>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+        <label for="firstname">First Name:<br></label>
+        <input type="text" name="firstname" id="firstname" placeholder="First Name" minlength="2" required><br>
+        <label for="lastname">Last Name:<br></label>
+        <input type="text" id="lastname" name="lastname" minlength="2" placeholder="Last Name" required><br>
+        <label for="email">Email:<br></label>
+        <input type="email" id="email" name="email" placeholder="Email" minlength="5" required><br>
+        <label for="favouritebooks" >Your Favourite Books:<br></label>
+        <textarea name="favouritebooks" required id="favouritebooks" minlength="5" placeholder="Enter your favourite books"></textarea><br>
+        <div class="inline">
+            <input type="checkbox" name="remember" required>
+            <p>I agree to clubs terms and conditions<br></p>
+        </div>
+        <button type="submit">Submit</button>
+        <div class="error-message"></div>
+    </form>
+</div>
+</body>
+</html>
