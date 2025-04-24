@@ -1,0 +1,30 @@
+<!-- login.html -->
+{% extends "blog\base.html" %}  <!-- If you're using a base template -->
+
+{% block content %}
+<div class="flex flex-col items-center space-y-4 mx-auto">
+    <h2 clas="text-lg items-center font-bold">Log In</h2>
+<form method="post">
+    {% csrf_token %}
+ <!--  {{form}}-->
+    {{ form }}
+     <div class="flex-col items-center space-y-4 left w-full mx-auto ">
+        <div>
+        <label for="username">Username:</label>
+        <input id="username" class="border border-gray-600 px-1 py-1">
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" class="border border-gray-600 px-1 py-1">
+    </div>
+         <div class="flex justify-center">
+            <button type="submit" class="border items-center border-gray-300 hover:bg-gray-100 rounded-md py-1 px-3">Log In</button>
+        </div>
+        <div class="flex flex-col">
+            <a href="../../account/password_reset" class="text-gray-600 text-xs text-center hover:cursor-pointer">Forgot your password?</a>
+            <span class="text-gray-600 text-xs text-center">Don't have an account? <a href="{% url 'signup' %}" class="text-blue-900 hover:cursor-pointer">Register here</a></span>
+        </div>
+    </div>
+</form>
+</div>
+{% endblock %}
