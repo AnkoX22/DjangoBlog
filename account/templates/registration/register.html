@@ -1,0 +1,47 @@
+{% extends "blog/base.html" %}
+{% block title %}Register Page{% endblock title %}
+{% block content %}
+<h3 class="font-bold text-2xl text-center text-gray-900">Create Account</h3>
+<div class="ax-w-md mx-auto items-center flex justify-center">
+    <form method="post" class="space-y-4">
+    {% csrf_token %}
+    {% if form.errors %}
+        {% for key, value in form.errors.items %}
+            <strong>{{ value }}</strong>
+        {% endfor %}
+        <button type="button" data-dismiss="alert" aria-label="close">
+            <span>&times;</span>
+        </button>
+    {% endif %}
+    <div class="py-2 flex">
+        <label class="px-2">First Name:</label>
+        {{ form.first_name }}
+    </div>
+    <div class="py-1">
+        <label class="px-2">Last Name:</label>
+        {{ form.last_name }}
+    </div>
+    <div class="py-2">
+        <label class="px-2">Username:</label>
+        {{ form.username }}
+    </div>
+    <div class="py-2">
+        <label class="px-2">Email:</label>
+        {{ form.email }}
+    </div>
+    <div class="py-2">
+        <label class="px-2">Password:</label>
+        {{form.password1}}
+        {{form.errors.password}}
+    </div>
+    <div class="py-2">
+        <label class="px-2">Confirm Password:</label>
+        {{ form.password2 }}
+    </div>
+    <div class="py-2 relative items-center">
+        <button type="submit" class="w-full border my-1 border-gray-400 py-1 px-2 center-text rounded-md hover:bg-gray-100">Sign Up</button>
+        <span class="text-sm text-gray-600 text-center">Have an account? Go to <a href="{% url 'login' %}" class="text-blue-600 text-sm">Sign in</a></span>
+    </div>
+</form>
+</div>
+{% endblock content %}

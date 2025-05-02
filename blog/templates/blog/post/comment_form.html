@@ -1,0 +1,18 @@
+
+
+{% block content %}
+<div class="my-5">
+    <h3 class="font-bold text-s">Add a new comment</h3>
+<form method="post" action="{% url 'blog:post_comment' year=post.publish.year month=post.publish.month day=post.publish.day post=post.slug %}" class="flex flex-col pt-4 items-left space-y-3 w-full">
+    {% csrf_token %}
+    <label for="name" class="font-bold text-xs">Your name:</label>
+    <input id="name" name="name" placeholder="Your name:" class="border border-gray-600 px-1 py-1 rounded-sm">
+    <label for="email" class="font-bold text-xs">Your email:</label>
+    <input id="email" name="email" placeholder="Your email:" class="border border-gray-600 px-1 py-1">
+    <label for="comment" class="font-bold text-xs">Your comment:</label>
+    <textarea id="comment" name="body" placeholder="Your comment:" class="border border-gray-600 px-1 py-1"></textarea>
+    <button type="submit" class="border border-gray-900 rounded-md font-bold text-xs  py-2 space-y-2 px-1 hover:bg-gray-100">Submit Comment</button>
+</form>
+</div>
+
+{% endblock %}
