@@ -1,0 +1,79 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Share a post{% endblock %}
+
+{% block content %}
+  <div class="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+    {% if sent %}
+      <div class="text-center">
+        <h1 class="text-2xl font-bold text-green-600 mb-4">Email successfully sent</h1>
+        <p class="text-gray-700 mb-4">"{{ post.title }}" was successfully sent to {{ form.cleaned_data.to }}.</p>
+        <a href="{{ post.get_absolute_url }}" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded transition duration-200">Back to the post</a>
+      </div>
+    {% else %}
+      <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Share "{{ post.title }}" by email</h1>
+
+      <div class="w-full">
+        <form method="post" class="space-y-4">
+          {% csrf_token %}
+
+          <div class="flex flex-col space-y-1">
+            <label class="font-medium text-sm text-gray-700" for="name">Your Name:</label>
+            <input type="text" name="name" id="name" required
+                   {% if form.name.value %}value="{{ form.name.value }}"{% endif %}
+                   placeholder="Enter your name"
+                   class="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+            {% if form.name.errors %}
+              <p class="text-red-500 text-xs mt-1">{{ form.name.errors }}</p>
+            {% endif %}
+          </div>
+
+          <div class="flex flex-col space-y-1">
+            <label class="font-medium text-sm text-gray-700" for="email">Your Email:</label>
+            <input type="email" name="email" id="email" required
+                   {% if form.email.value %}value="{{ form.email.value }}"{% endif %}
+                   placeholder="Enter your email"
+                   class="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+            {% if form.email.errors %}
+              <p class="text-red-500 text-xs mt-1">{{ form.email.errors }}</p>
+            {% endif %}
+          </div>
+
+          <div class="flex flex-col space-y-1">
+            <label class="font-medium text-sm text-gray-700" for="to">Send to:</label>
+            <input type="email" name="to" id="to" required
+                   {% if form.to.value %}value="{{ form.to.value }}"{% endif %}
+                   placeholder="Send post to"
+                   class="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+            {% if form.to.errors %}
+              <p class="text-red-500 text-xs mt-1">{{ form.to.errors }}</p>
+            {% endif %}
+          </div>
+
+          <div class="flex flex-col space-y-1">
+            <label class="font-medium text-sm text-gray-700" for="comments">Comments (optional):</label>
+            <textarea name="comments" id="comments" rows="3"
+                      placeholder="Add your comments (optional)"
+                      class="border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >{% if form.comments.value %}{{ form.comments.value }}{% endif %}</textarea>
+            {% if form.comments.errors %}
+              <p class="text-red-500 text-xs mt-1">{{ form.comments.errors }}</p>
+            {% endif %}
+          </div>
+
+          <div class="flex items-center justify-between pt-2">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition duration-200">
+              Send Email
+            </button>
+            <a href="{{ post.get_absolute_url }}" class="text-gray-600 hover:text-gray-800 font-medium text-sm transition duration-200">
+              Cancel
+            </a>
+          </div>
+        </form>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

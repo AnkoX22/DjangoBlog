@@ -16,11 +16,13 @@
                         <p class="mt-2 text-lg leading-8 text-gray-600">Lorem Ipsum</p>
                    </div>
                    {% if user.is_authenticated %}
-                        <form action="{% url 'logout' %}" method="post">
+                       <div class="flex space-x-2">
+                            <form action="{% url 'logout' %}" method="post">
                             {% csrf_token %}
                             <button type="submit" class="border border-gray-300 text-xs font-bold py-2 px-2 hover:bg-gray-100 rounded-md">Log out</button>
                         </form>
-
+                        <a href="{% url 'user-profile' %}" class="border border-gray-300 text-xs font-bold py-2 px-2 hover:bg-gray-100 rounded-md">Profile</a>
+                       </div>
                    {% else %}
                         <a href="{% url 'login' %}" class="border border-gray-300 text-xs font-bold py-2 px-2 hover:bg-gray-100 rounded-md">Log in</a>
 

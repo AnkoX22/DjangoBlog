@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404, reverse, redirect
+
+from mysite import settings
 from .models import Post, Status, Comment
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import EmailPostForm, CommentForm
@@ -32,23 +34,35 @@ def post_detail(request, year, month, day, post):
     return render(request, 'blog/post/detail.html', {'post': post})
 
 
-def post_share(request):
+def post_share(request,year, month, day, post):
+
+    post = get_object_or_404(Post, slug=post, publish__year=year,
+                             publish__month=month, publish__day=day)
+
+    sent = False
+
     if request.method == 'POST':
         form = EmailPostForm(request.POST)
         if form.is_valid():
+
+            post_url = request.build_absolute_uri(post.get_absolute_url())
             email = form.cleaned_data['email']
             to = form.cleaned_data['to']
             name = form.cleaned_data['name']
-            comments = form.cleaned_data['comments']
 
-        message = f"""
-        Received message from {name}, email: {email}
-        {comments}
-        """
+            message = f"""
+            Received message from {name}, email: {email}
+            Check this out {post.get_absolute_url()}
+            """
 
-        send_mail(subject="Post Share", message=message, from_email="noreply@me.com",
-                  recipient_list=[to])
-        return render(request, "blog/list.html")
+            send_mail(subject="Post Share", message=message, from_email="noreply@me.com",
+                    recipient_list=[to])
+            sent = True
+
+        else:
+            form = EmailPostForm()
+
+    return render(request, "blog/post/share.html", {'post': post})
 
 
 def post_comment(request, year, month, day, post):

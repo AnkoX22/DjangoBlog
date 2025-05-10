@@ -32,6 +32,9 @@ class UpdateProfileForm(forms.ModelForm):
         model = Profile
         fields = ['avatar', 'bio']
 
+    def clean_avatar(self):
+        avatar = self.cleaned_data['avatar']
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Apply Tailwind classes to all fields
